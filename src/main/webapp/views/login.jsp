@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>고운선택</title>
+    <title>고운선택 - 로그인 페이지</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png">
 </head>
@@ -44,10 +44,10 @@
                 "password": password
             };
 
-            fetch('${pageContext.request.contextPath}/login', {
+            fetch("${pageContext.request.contextPath}/login", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestData)
             })

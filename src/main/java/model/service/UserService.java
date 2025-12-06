@@ -46,9 +46,9 @@ public class UserService {
     // =======================================================
     public Users loginUser(String email, String password) {
         Connection conn = JDBCTemplate.getConnection();
-        
+                
         Users user = uDao.loginUser(conn, email, password);
-
+        
         JDBCTemplate.close(conn);
         return user;
     }
