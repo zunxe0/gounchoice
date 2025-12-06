@@ -64,31 +64,25 @@
         // -----------------------------------------------------------
 
         async function checkLoginStatus() {		
-            try {
-                const response = await fetch(CONTEXT_PATH + '/login', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                }); 
-                
-                if (response.ok){
-                    const userData = await response.json();
-                    renderLoggedInMenu(userData.name);
-                    return userData;
-                } else {
-                    renderLoggedOutMenu();
-                    return null;
-                }
-            } catch (error) {
-                console.error('로그인 상태 확인 중 네트워크 오류 또는 서버 오류:', error);
-                renderLoggedOutMenu(); // 오류 발생 시 안전하게 로그아웃 메뉴 표시
-                return null;
-            }
-        }
+		    const response = await fetch(CONTEXT_PATH + '/login', {
+		        method: 'GET',
+		        headers: {
+		            'Content-Type': 'application/json;'
+		        },
+		    }); 
+		    
+		    if (response.ok){
+		        const userData = await response.json();
+		        renderLoggedInMenu(userData.name);
+		        return userData;
+		    } else {
+		        renderLoggedOutMenu();
+		        return null;
+		    }
+		}
 
-        function renderLoggedInMenu(userName) {            
-            utilityArea.innerHTML = `
+        function renderLoggedInMenu(userName) {
+            UTILITY_AREA.innerHTML = `
                 <span style="font-weight: 500; margin-right: 5px; color: #4b3832;">${userName}님</span>
                 <a href="${CONTEXT_PATH}/logout">로그아웃</a>
                 <a href="#">마이페이지</a>
@@ -96,18 +90,15 @@
             `;
         }
 
-        function renderLoggedOutMenu() {            
-            utilityArea.innerHTML = `
+        function renderLoggedOutMenu() {
+            UTILITY_AREA.innerHTML = `
                 <a href="${CONTEXT_PATH}/views/login.jsp">로그인</a>
                 <a href="${CONTEXT_PATH}/views/signup.jsp">회원가입</a>
-                <a href="#">마이페이지</a>
-                <a href="#">장바구니</a>
             `;
-            // NOTE: 로그아웃 메뉴는 초기 HTML을 덮어쓰고, 로그인 성공 시에만 hasMenuBeenRendered로 보호됩니다.
         }
 
-       /* // -----------------------------------------------------------
-        // 2. 상품 API 호출 및 렌더링 (주석 해제 필요 시)
+        // -----------------------------------------------------------
+        // 2. 상품 API 호출 및 렌더링
         // -----------------------------------------------------------
 
         async function loadProducts(filterParams = {}) {
@@ -122,11 +113,12 @@
                 }
             }
             
+            // API URL에 Context Path 사용
             const apiUrl = `${CONTEXT_PATH}/product/search?${queryParams.toString()}`;
             
-            productGrid.innerHTML = ''; 
-            messageArea.style.display = 'block';
-            messageArea.textContent = '상품 정보를 불러오는 중입니다...';
+            PRODUCT_GRID.innerHTML = ''; 
+            MESSAGE_AREA.style.display = 'block';
+            MESSAGE_AREA.textContent = '상품 정보를 불러오는 중입니다...';
 
             try {
                 const response = await fetch(apiUrl);
@@ -141,25 +133,27 @@
 
             } catch (error) {
                 console.error('상품 API 호출 중 오류 발생:', error);
-                messageArea.textContent = '상품 목록을 불러오지 못했습니다. 네트워크 연결을 확인해주세요.';
+                MESSAGE_AREA.textContent = '상품 목록을 불러오지 못했습니다. 네트워크 연결을 확인해주세요.';
             }
         }
 
         function renderProducts(products) {
             
             if (products.length === 0) {
-                messageArea.textContent = '검색 조건에 맞는 상품이 없습니다.';
-                messageArea.style.display = 'block';
+                MESSAGE_AREA.textContent = '검색 조건에 맞는 상품이 없습니다.';
+                MESSAGE_AREA.style.display = 'block';
                 return;
             }
 
-            messageArea.style.display = 'none';
-            productGrid.innerHTML = ''; 
+            MESSAGE_AREA.style.display = 'none';
+            PRODUCT_GRID.innerHTML = ''; 
 
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 
+                // image 경로에 Context Path 사용
+                // API에서 반환된 image 경로가 이미 컨텍스트 루트(/)부터 시작한다고 가정
                 const imagePath = `${CONTEXT_PATH}${product.image}`; 
                 
                 card.innerHTML = `
@@ -172,7 +166,7 @@
                         <div class="product-rating">평점: ${product.rating}</div>
                     </div>
                 `;
-                productGrid.appendChild(card);
+                PRODUCT_GRID.appendChild(card);
             });
         }
         
@@ -187,19 +181,19 @@
                 message = errorData.message;
             }
             
-            messageArea.textContent = message;
-            messageArea.style.display = 'block';
+            MESSAGE_AREA.textContent = message;
+            MESSAGE_AREA.style.display = 'block';
         }
 
 
         // -----------------------------------------------------------
-        // 3. 이벤트 리스너 (주석 해제 필요 시)
+        // 3. 이벤트 리스너
         // -----------------------------------------------------------
 
-        searchForm.addEventListener('submit', (e) => {
+        SEARCH_FORM.addEventListener('submit', (e) => {
             e.preventDefault();
             const keyword = document.getElementById('search').value.trim();
-            productTitle.textContent = `"${keyword}" 검색 결과`;
+            PRODUCT_TITLE.textContent = `"${keyword}" 검색 결과`;
             loadProducts({ keyword: keyword });
         });
 
@@ -210,12 +204,13 @@
                 document.querySelectorAll('#mainNav .category-btn').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
 
-                productTitle.textContent = category === '' ? '전체 상품 목록' : `${category} 상품 목록`;
+                PRODUCT_TITLE.textContent = category === '' ? '전체 상품 목록' : `${category} 상품 목록`;
                 
+                // API 스펙에 맞춰 필터링 호출
                 loadProducts({ category: category === '' ? [] : [category] });
             }
         });
- */
+
 
         // -----------------------------------------------------------
         // 4. 초기화
@@ -223,7 +218,7 @@
 
         window.onload = () => {
             checkLoginStatus(); 
-/* loadProducts(); */
+            loadProducts();
         };
 
     </script>
