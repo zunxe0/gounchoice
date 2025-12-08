@@ -70,4 +70,29 @@ public class LoginServlet extends HttpServlet {
         // 5. JSON 응답 전송
         mapper.writeValue(response.getWriter(), responseMap);
     }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json; charset=UTF-8");
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> responseMap = new HashMap<>();
+
+        HttpSession session = request.getSession(false);
+        Users loginUser = (session != null) ? (Users) session.getAttribute("loginUser") : null;
+
+        if (loginUser != null) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            responseMap.put("name", loginUser.getName());
+            responseMap.put("email", loginUser.getEmail());
+            responseMap.put("phoneNumber", loginUser.getPhoneNumber());
+            responseMap.put("address", loginUser.getAddress());
+        } 
+	    else {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        responseMap.put("status", 401);
+	        responseMap.put("code", "NOT_LOGGED_IN");
+	        responseMap.put("message", "로그인된 사용자 정보가 없습니다.");
+	    }
+        
+        mapper.writeValue(response.getWriter(), responseMap);
+    }
 }

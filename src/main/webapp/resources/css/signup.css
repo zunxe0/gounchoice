@@ -1,22 +1,33 @@
 @charset "UTF-8";
 
+:root {
+    --bg-color: #F3EBE0;
+    --header-bg: #B1907F;
+    --text-color: #333333;
+    --box-border: #dcdcdc;
+    --input-border-default: #C4C4C4;
+    --point-color: #AB9282;
+    --button-text-color: #4b3832;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
 body {
-    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-    background-color: #F3EBE0;
-    height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 header {
     width: 100%;
-    background-color: #B1907F;
+    background-color: var(--header-bg);
     padding: 10px 40px;
     display: flex;
     align-items: center;
@@ -30,7 +41,7 @@ header {
 }
 
 .logo-img {
-    height: 150px;
+    height: 80px; 
     width: auto;
     object-fit: contain;
 }
@@ -52,26 +63,29 @@ header {
 
 .signup-box {
     background-color: #ffffff;
-    border: 1px solid #dcdcdc;
+    border: 1px solid var(--box-border);
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .input-group {
     display: flex;
     align-items: center;
-    padding: 20px 24px;
-}
-
-.input-group:first-child {
+    padding: 16px 20px;
     border-bottom: 1px solid #eee;
 }
 
+.signup-box .input-group:last-child {
+    border-bottom: none;
+}
+
 .email-img, .password-img, .name-img, .phoneNumber-img, .address-img {
-    width: 24px;
-    height: 24px;
-    margin-right: 16px;
-    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    opacity: 0.6;
 }
 
 .input-field {
@@ -79,26 +93,70 @@ header {
     outline: none;
     width: 100%;
     font-size: 16px;
-    color: #333;
-    height: 100%;
+    color: var(--text-color);
+    height: 24px;
+    padding: 0;
 }
 
 .input-field::placeholder {
     color: #aaa;
 }
 
-.btn-submit {
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 18px 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
+.input-group.input-with-button {
+    padding: 16px 20px 8px 20px;
+    border-bottom: none;
+}
+
+.input-group.input-with-button .input-field {
+    flex-grow: 1;
+    border: none;
+    height: auto;
+    font-size: 17px;
+}
+
+.btn-dup-check {
+    background-color: var(--point-color);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 4px;
     cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 10px;
+    height: 36px;
     transition: background-color 0.2s;
 }
 
+.btn-dup-check:hover:not(:disabled) {
+    background-color: #9c7b69;
+}
+
+#emailStatus {
+    padding: 0 20px;
+    margin-top: -10px;
+    margin-bottom: 10px; 
+    font-size: 13px;
+    min-height: 15px;
+    padding-left: 52px; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 10px;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: var(--point-color);
+    border: none;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
 .btn-submit:hover {
-    background-color: #f5f5f5;
+    background-color: #9c7b69;
 }
