@@ -90,6 +90,10 @@
 		<div class="filter-apply-area">
 			<button id="applyFiltersBtn" class="search-button">필터 적용</button>
 		</div>
+		<section id="recommendSection">
+            <h2>✨ 회원님을 위한 추천 상품</h2>
+            <div class="recommend-grid" id="recommendGrid"></div>
+        </section>
 		<section class="product-list-container">
 			<div id="productHeader">
 				<h2 id="productTitle"></h2>
@@ -109,6 +113,8 @@
         const messageArea = document.getElementById('messageArea');
         const filterArea = document.getElementById('filterArea');
         const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+        const recommendSection = document.getElementById('recommendSection');
+        const recommendGrid = document.getElementById('recommendGrid');
         
         let currentPage = 1;
         const itemsPerPage = 40;
@@ -702,6 +708,62 @@
 		        sessionStorage.setItem('isLogoClicked', 'true');
 		    });
 		}
+		
+		async function loadRecommendProducts() {
+            try {
+                const loginResponse = await fetch("${pageContext.request.contextPath}/user/login");
+                
+                if (loginResponse.ok) {
+                    const recommendResponse = await fetch("${pageContext.request.contextPath}/product/recommend");
+                    if (recommendResponse.ok) {
+                        const products = await recommendResponse.json();
+                        if (products && products.length > 0) {
+                            renderRecommendProducts(products);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("추천 상품 로드 실패:", e);
+            }
+        }
+
+        function renderRecommendProducts(products) {
+            recommendGrid.innerHTML = '';
+            
+            const displayProducts = products.slice(0, 5); 
+
+            displayProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'recommend-card';
+                card.onclick = () => {
+                    window.location.href = "${pageContext.request.contextPath}/views/productDetail.jsp?productId=" + product.productId;
+                };
+
+                const img = document.createElement('img');
+                img.src = product.productImage;
+                img.alt = product.productName;
+
+                const info = document.createElement('div');
+                info.className = 'recommend-info';
+
+                const name = document.createElement('div');
+                name.className = 'recommend-name';
+                name.textContent = product.productName;
+
+                const price = document.createElement('div');
+                price.className = 'recommend-price';
+                price.textContent = product.price.toLocaleString() + "원";
+
+                info.appendChild(name);
+                info.appendChild(price);
+                card.appendChild(img);
+                card.appendChild(info);
+
+                recommendGrid.appendChild(card);
+            });
+
+            recommendSection.style.display = 'block';
+        }
 
         window.onload = () => {
         	const nav = performance.getEntriesByType("navigation")[0];
@@ -730,6 +792,7 @@
             renderFilters()
             loadProducts(1, true); 
             setupInfiniteScroll(); 
+            loadRecommendProducts();
         };
     </script>
 </body>

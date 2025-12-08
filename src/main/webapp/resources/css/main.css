@@ -379,3 +379,62 @@ a {
 	color: #4b3832;
 	white-space: nowrap;
 }
+
+#recommendSection {
+	display: none;
+	margin-bottom: 40px;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 8px;
+	border: 1px solid #e0e0e0;
+}
+
+#recommendSection h2 {
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 15px;
+	color: #4A3A32;
+}
+
+.recommend-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 20px;
+}
+
+.recommend-card {
+	cursor: pointer;
+	border: 1px solid #eee;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: transform 0.2s;
+}
+
+.recommend-card:hover {
+	transform: translateY(-5px);
+}
+
+.recommend-card img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+.recommend-info {
+	padding: 10px;
+}
+
+.recommend-name {
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.recommend-price {
+	font-size: 14px;
+	font-weight: 700;
+	color: #AB9282;
+}
